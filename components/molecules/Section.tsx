@@ -5,18 +5,23 @@ import theme from "../../lib/theme";
 import Spacer from "../atoms/Spacer";
 
 type Props = {
-    title: string;
+    title?: string;
     children?: ReactNode | ReactNode[];
     containerStyle?: StyleProp<ViewStyle>;
+    style?: StyleProp<ViewStyle>;
 };
 
-const Section = ({ title, children, containerStyle }: Props) => {
+const Section = ({ title, children, containerStyle, style }: Props) => {
     return (
-        <View>
-            <StyledText weight="medium" size="xs" style={styles.title}>
-                {title}
-            </StyledText>
-            <Spacer size="sm" />
+        <View style={style}>
+            {title && (
+                <>
+                    <StyledText weight="medium" size="xs" style={styles.title}>
+                        {title}
+                    </StyledText>
+                    <Spacer size="sm" />
+                </>
+            )}
             <View style={[styles.container, containerStyle]}>{children}</View>
         </View>
     );

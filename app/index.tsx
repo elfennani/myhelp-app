@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
         alignItems: "stretch",
         justifyContent: "flex-start",
         flex: 1,
+        paddingTop: 24,
     },
     sectionContent: {
         gap: 16,

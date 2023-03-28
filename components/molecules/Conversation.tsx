@@ -9,7 +9,7 @@ import { useRouter } from "expo-router";
 type Props = {
     color?: string;
     name: string;
-    sub: string;
+    sub?: string;
     time?: string;
     icon: ReactNode | ReactNode[];
     cut?: number;
@@ -51,13 +51,15 @@ const Conversation = ({
                             {time}
                         </StyledText>
                     </View>
-                    <StyledText
-                        style={styles.subtext}
-                        numberOfLines={cut}
-                        size="sm"
-                    >
-                        {sub}
-                    </StyledText>
+                    {sub && (
+                        <StyledText
+                            style={styles.subtext}
+                            numberOfLines={cut}
+                            size="sm"
+                        >
+                            {sub}
+                        </StyledText>
+                    )}
                 </View>
             </View>
         </TouchableOpacity>

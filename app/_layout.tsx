@@ -1,6 +1,13 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Touchable, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { SplashScreen, Stack } from "expo-router";
+import {
+    Link,
+    SplashScreen,
+    Stack,
+    useNavigation,
+    usePathname,
+    useRouter,
+} from "expo-router";
 import { Image } from "expo-image";
 import { StatusBar } from "expo-status-bar";
 import {
@@ -19,6 +26,10 @@ const RootLayout = (props: Props) => {
         Outfit_600: Outfit_600SemiBold,
     });
 
+    const { canGoBack } = useNavigation();
+    const { back, push } = useRouter();
+    const path = usePathname();
+
     if (!fontIsLoaded) return <SplashScreen />;
 
     return (
@@ -31,14 +42,21 @@ const RootLayout = (props: Props) => {
                         backgroundColor: "#f1f5f9",
                     },
                     statusBarTranslucent: true,
+                    headerBackVisible: false,
                     headerTitle: () => (
-                        <View style={styles.headerTitleContainer}>
-                            <Image
-                                source={require("../assets/logo.png")}
-                                style={styles.headerTitleImage}
-                                contentFit="cover"
-                            />
-                        </View>
+                        <TouchableOpacity
+                            activeOpacity={0.75}
+                            onPress={() => push("/")}
+                            disabled={path == "/"}
+                        >
+                            <View style={styles.headerTitleContainer}>
+                                <Image
+                                    source={require("../assets/logo.png")}
+                                    style={styles.headerTitleImage}
+                                    contentFit="cover"
+                                />
+                            </View>
+                        </TouchableOpacity>
                     ),
                     headerRight: () => (
                         <View style={styles.headerRightContainer}>
@@ -63,6 +81,7 @@ const styles = StyleSheet.create({
     headerTitleContainer: {
         flexDirection: "row",
         paddingVertical: 24,
+        paddingBottom: 0,
         justifyContent: "space-between",
     },
     headerTitleImage: { aspectRatio: 135 / 48, height: 48 },
