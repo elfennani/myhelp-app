@@ -3,9 +3,12 @@ import React from "react";
 import { ChatsTeardrop, IconContext, UsersThree } from "phosphor-react-native";
 import theme from "../../lib/theme";
 
-type Props = {};
+type Props = {
+    onOpenHistory(): void;
+    onOpenPersons(): void;
+};
 
-const Header = (props: Props) => {
+const Header = ({ onOpenHistory, onOpenPersons }: Props) => {
     return (
         <View style={styles.header}>
             <IconContext.Provider value={{ color: theme.colors.grey.c900 }}>
@@ -17,7 +20,7 @@ const Header = (props: Props) => {
                         left: 16,
                         right: 16,
                     }}
-                    onPress={() => console.log("press")}
+                    onPress={() => onOpenHistory()}
                 >
                     <ChatsTeardrop />
                 </TouchableOpacity>
@@ -29,7 +32,7 @@ const Header = (props: Props) => {
                         left: 16,
                         right: 16,
                     }}
-                    onPress={() => console.log("press")}
+                    onPress={() => onOpenPersons()}
                 >
                     <UsersThree />
                 </TouchableOpacity>

@@ -1,16 +1,5 @@
-import { StyleSheet, Touchable, TouchableOpacity, View } from "react-native";
 import React from "react";
-import {
-    Link,
-    Navigator,
-    Slot,
-    SplashScreen,
-    Stack,
-    useNavigation,
-    usePathname,
-    useRouter,
-} from "expo-router";
-import { Image } from "expo-image";
+import { Navigator, Slot, SplashScreen } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import {
     useFonts,
@@ -43,30 +32,3 @@ const RootLayout = (props: Props) => {
 };
 
 export default RootLayout;
-
-const styles = StyleSheet.create({
-    headerTitleContainer: {
-        flexDirection: "row",
-        paddingVertical: 24,
-        paddingBottom: 0,
-        justifyContent: "space-between",
-    },
-    headerTitleImage: { aspectRatio: 135 / 48, height: 48 },
-    headerRightContainer: {
-        width: 40,
-        height: 40,
-        backgroundColor: "white",
-        borderRadius: 1000,
-        overflow: "hidden",
-        borderWidth: 2,
-        borderColor: "white",
-    },
-    headerRightImage: {
-        width: "100%",
-        height: "100%",
-    },
-    contentStyle: {
-        backgroundColor: "#f1f5f9",
-        padding: 16,
-    },
-});

@@ -7,38 +7,73 @@ import Header from "../components/molecules/Header";
 import MessageField from "../components/molecules/MessageField";
 import StartLayout from "../components/organisms/StartLayout";
 import Sidebar from "../components/organisms/Sidebar";
+import { PanGestureHandler } from "react-native-gesture-handler";
+import useSidebarAnimate from "../hooks/useSidebarAnimate";
 
 type Props = {};
 
 const Home = (props: Props) => {
     const { top, bottom } = useSafeAreaInsets();
+    const {
+        contentStyle,
+        gestureHandler,
+        leftStyle,
+        openHistory,
+        openPersons,
+        rightStyle,
+    } = useSidebarAnimate();
 
     return (
-        <View style={styles.wrapper}>
-            <Animated.View
-                style={[
-                    styles.sidebar,
-                    {
-                        top: top + 32,
-                        bottom: bottom + 32,
-                        left: -320,
-                    },
-                ]}
-            >
-                <Sidebar />
-            </Animated.View>
-            <Animated.View
-                style={[
-                    styles.container,
-                    { paddingTop: top + 32, paddingBottom: bottom + 32 },
-                ]}
-            >
-                <Header />
-                <View style={styles.content}>
-                    <StartLayout />
-                </View>
-                <MessageField />
-            </Animated.View>
+        <View style={[styles.wrapper]}>
+            <PanGestureHandler onGestureEvent={gestureHandler}>
+                <Animated.View style={[styles.container]}>
+                    <Animated.View
+                        style={[
+                            styles.sidebar,
+                            styles.leftSidebar,
+                            {
+                                top: top + 16,
+                                bottom: bottom + 32,
+                            },
+                            leftStyle,
+                        ]}
+                    >
+                        <Sidebar />
+                    </Animated.View>
+                    <Animated.View
+                        style={[
+                            styles.home,
+                            {
+                                paddingTop: top + 32,
+                                paddingBottom: bottom + 32,
+                            },
+                            contentStyle,
+                        ]}
+                    >
+                        <Header
+                            onOpenHistory={openHistory}
+                            onOpenPersons={openPersons}
+                        />
+                        <View style={styles.content}>
+                            <StartLayout />
+                        </View>
+                        <MessageField />
+                    </Animated.View>
+                    <Animated.View
+                        style={[
+                            styles.sidebar,
+                            styles.rightSidebar,
+                            {
+                                top: top + 16,
+                                bottom: bottom + 32,
+                            },
+                            rightStyle,
+                        ]}
+                    >
+                        <Sidebar />
+                    </Animated.View>
+                </Animated.View>
+            </PanGestureHandler>
         </View>
     );
 };
@@ -46,8 +81,10 @@ const Home = (props: Props) => {
 export default Home;
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
     sidebar: {
-        width: 300,
         position: "absolute",
         bottom: 0,
         top: 0,
@@ -61,14 +98,21 @@ const styles = StyleSheet.create({
         shadowRadius: 9.51,
         elevation: 15,
         shadowColor: "#64748B",
-        borderRadius: 12,
+        borderRadius: 24,
+        width: 300,
+    },
+    leftSidebar: {
         marginLeft: 16,
+    },
+    rightSidebar: {
+        right: 0,
+        marginRight: 16,
     },
     wrapper: {
         flex: 1,
         backgroundColor: theme.colors.grey.c200,
     },
-    container: {
+    home: {
         flex: 1,
         padding: 32,
         gap: 24,
