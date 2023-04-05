@@ -2,6 +2,8 @@ import { StyleSheet, Touchable, TouchableOpacity, View } from "react-native";
 import React from "react";
 import {
     Link,
+    Navigator,
+    Slot,
     SplashScreen,
     Stack,
     useNavigation,
@@ -16,6 +18,7 @@ import {
     Outfit_500Medium,
     Outfit_600SemiBold,
 } from "@expo-google-fonts/outfit";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type Props = {};
 
@@ -25,52 +28,16 @@ const RootLayout = (props: Props) => {
         Outfit_500: Outfit_500Medium,
         Outfit_600: Outfit_600SemiBold,
     });
-
-    const { canGoBack } = useNavigation();
-    const { back, push } = useRouter();
-    const path = usePathname();
+    const { top } = useSafeAreaInsets();
 
     if (!fontIsLoaded) return <SplashScreen />;
 
     return (
         <>
             <StatusBar style="auto" translucent />
-            <Stack
-                screenOptions={{
-                    animation: "slide_from_right",
-                    headerStyle: {
-                        backgroundColor: "#f1f5f9",
-                    },
-                    statusBarTranslucent: true,
-                    headerBackVisible: false,
-                    headerTitle: () => (
-                        <TouchableOpacity
-                            activeOpacity={0.75}
-                            onPress={() => push("/")}
-                            disabled={path == "/"}
-                        >
-                            <View style={styles.headerTitleContainer}>
-                                <Image
-                                    source={require("../assets/logo.png")}
-                                    style={styles.headerTitleImage}
-                                    contentFit="cover"
-                                />
-                            </View>
-                        </TouchableOpacity>
-                    ),
-                    headerRight: () => (
-                        <View style={styles.headerRightContainer}>
-                            <Image
-                                source={require("../assets/user.png")}
-                                style={styles.headerRightImage}
-                                contentFit="cover"
-                            />
-                        </View>
-                    ),
-                    headerShadowVisible: false,
-                    contentStyle: styles.contentStyle,
-                }}
-            />
+            <Navigator>
+                <Slot />
+            </Navigator>
         </>
     );
 };

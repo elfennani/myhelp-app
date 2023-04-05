@@ -1,10 +1,7 @@
 {
-  "expo": {
-    "scheme": "acme",
-    "web": {
-      "bundler": "metro"
-    },
-    "name": "myhelp-app",
-    "slug": "myhelp-app"
-  }
+    "expo": {
+        "scheme": "acme",
+        "name": "myhelp-app",
+        "slug": "myhelp-app"
+    }
 }
