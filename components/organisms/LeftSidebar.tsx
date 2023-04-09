@@ -3,14 +3,14 @@ import React from "react";
 
 type Props = {};
 
-const Sidebar = (props: Props) => {
+const LeftSidebar = (props: Props) => {
     return (
         <View>
-            <Text>Sidebar</Text>
+            <Text>LeftSidebar</Text>
         </View>
     );
 };
 
-export default Sidebar;
+export default LeftSidebar;
 
 const styles = StyleSheet.create({});

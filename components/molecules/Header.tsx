@@ -24,18 +24,20 @@ const Header = ({ onOpenHistory, onOpenPersons }: Props) => {
                 >
                     <ChatsTeardrop />
                 </TouchableOpacity>
-                <TouchableOpacity
-                    activeOpacity={0.5}
-                    hitSlop={{
-                        top: 16,
-                        bottom: 16,
-                        left: 16,
-                        right: 16,
-                    }}
-                    onPress={() => onOpenPersons()}
-                >
-                    <UsersThree />
-                </TouchableOpacity>
+                <View>
+                    <TouchableOpacity
+                        activeOpacity={0.5}
+                        hitSlop={{
+                            top: 16,
+                            bottom: 16,
+                            left: 16,
+                            right: 16,
+                        }}
+                        onPress={() => onOpenPersons()}
+                    >
+                        <UsersThree />
+                    </TouchableOpacity>
+                </View>
             </IconContext.Provider>
         </View>
     );

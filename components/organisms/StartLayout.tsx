@@ -10,8 +10,7 @@ const StartLayout = (props: Props) => {
     return (
         <View style={styles.content}>
             <StyledText style={styles.welcomeText}>
-                Hi! I'm an{" "}
-                <Text style={styles.innerText}>English teacher...</Text>
+                Act as <Text style={styles.innerText}>English teacher...</Text>
             </StyledText>
             <StyledText style={styles.or}>OR</StyledText>
             <TouchableOpacity
