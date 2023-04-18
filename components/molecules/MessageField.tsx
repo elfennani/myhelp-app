@@ -15,7 +15,6 @@ const MessageField = ({ onSubmit }: Props) => {
     const router = useRouter();
     const { chatId } = useSearchParams();
     const queryClient = useQueryClient();
-    const isLoading = false;
 
     const createChat = useMutation(
         ["chat"],
@@ -91,6 +90,10 @@ const MessageField = ({ onSubmit }: Props) => {
         createChat.mutate(value);
     };
 
+    const isDisabled =
+        createChat.isLoading || messageChat.isLoading || value == "";
+    const isLoading = createChat.isLoading;
+
     return (
         <View style={styles.searchWrapper}>
             <TextInput
@@ -111,18 +114,18 @@ const MessageField = ({ onSubmit }: Props) => {
                         right: 16,
                     }}
                     onPress={submitHandler}
-                    disabled={
-                        createChat.isLoading ||
-                        messageChat.isLoading ||
-                        value == ""
-                    }
+                    disabled={isDisabled}
                 >
-                    {createChat.isLoading ? (
+                    {isLoading ? (
                         <Spinner size={18} color={theme.colors.grey.c600} />
                     ) : (
                         <PaperPlaneTilt
                             size={18}
-                            color={theme.colors.grey.c600}
+                            color={
+                                isDisabled
+                                    ? theme.colors.grey.c300
+                                    : theme.colors.grey.c600
+                            }
                         />
                     )}
                 </TouchableOpacity>

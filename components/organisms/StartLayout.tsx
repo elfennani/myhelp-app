@@ -3,6 +3,7 @@ import React from "react";
 import StyledText from "../atoms/StyledText";
 import { ChatTeardropText } from "phosphor-react-native";
 import theme from "../../lib/theme";
+import client from "../../lib/client";
 
 type Props = {};
 
@@ -16,7 +17,7 @@ const StartLayout = (props: Props) => {
             <TouchableOpacity
                 activeOpacity={0.5}
                 hitSlop={{ top: 16, bottom: 16, left: 16, right: 16 }}
-                onPress={() => console.log("press")}
+                onPress={() => client.auth.signOut()}
             >
                 <View style={styles.button}>
                     <ChatTeardropText

@@ -17,10 +17,14 @@ import { serverDomain } from "../../lib/config";
 type Props = {};
 
 const ChatHistory = (props: Props) => {
-    const { data } = useQuery(["history"], async () => {
-        const res = await fetch(`${serverDomain}/chats`);
-        return await res.json();
-    });
+    const { data } = useQuery(
+        ["history"],
+        async () => {
+            const res = await fetch(`${serverDomain}/chats`);
+            return await res.json();
+        },
+        { enabled: false }
+    );
 
     return (
         <View style={styles.container}>

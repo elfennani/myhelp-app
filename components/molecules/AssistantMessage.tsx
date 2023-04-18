@@ -10,12 +10,14 @@ type Props = {
 const AssistantMessage = ({ content }: Props) => {
     return (
         <View>
-            <StyledText style={styles.text}>{content}</StyledText>
+            <StyledText selectable style={styles.text}>
+                {content}
+            </StyledText>
         </View>
     );
 };
 
-export default AssistantMessage;
+export default React.memo(AssistantMessage);
 
 const styles = StyleSheet.create({
     text: {

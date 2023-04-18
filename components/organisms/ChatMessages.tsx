@@ -18,6 +18,7 @@ const ChatMessages = (props: Props) => {
                     padding: 32,
                     flexDirection: "column-reverse",
                 }}
+                keyExtractor={(item, i) => i.toString()}
                 style={{ margin: -32, marginTop: 0 }}
                 inverted
                 renderItem={({ item }) =>

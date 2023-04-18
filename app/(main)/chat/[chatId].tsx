@@ -7,8 +7,8 @@ import {
     useNavigation,
 } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
-import { serverDomain } from "../../lib/config";
-import ChatMessages from "../../components/organisms/ChatMessages";
+import { serverDomain } from "../../../lib/config";
+import ChatMessages from "../../../components/organisms/ChatMessages";
 
 type Props = {};
 
