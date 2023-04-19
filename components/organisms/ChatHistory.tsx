@@ -13,18 +13,20 @@ import { IconContext, Pencil } from "phosphor-react-native";
 import HistoryItem from "../molecules/HistoryItem";
 import { useQuery } from "@tanstack/react-query";
 import { serverDomain } from "../../lib/config";
+import client from "../../lib/client";
 
 type Props = {};
 
 const ChatHistory = (props: Props) => {
-    const { data } = useQuery(
-        ["history"],
-        async () => {
-            const res = await fetch(`${serverDomain}/chats`);
-            return await res.json();
-        },
-        { enabled: false }
-    );
+    const { data } = useQuery(["history"], async () => {
+        const { data, error } = await client
+            .from("chats")
+            .select("*")
+            .throwOnError();
+        if (!data) throw new Error();
+
+        return data;
+    });
 
     return (
         <View style={styles.container}>
@@ -33,9 +35,9 @@ const ChatHistory = (props: Props) => {
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
                     <HistoryItem
-                        id={item.id}
-                        name={item.chatName}
-                        timeCreated={new Date(item.timeCreated)}
+                        id={item.id.toString()}
+                        name={item.name as string}
+                        timeCreated={new Date(item.created_at as string)}
                     />
                 )}
             />

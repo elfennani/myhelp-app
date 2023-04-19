@@ -4,20 +4,32 @@ import StyledText from "../atoms/StyledText";
 import { ChatTeardropText } from "phosphor-react-native";
 import theme from "../../lib/theme";
 import client from "../../lib/client";
+import { useIsMutating, useMutation } from "@tanstack/react-query";
 
 type Props = {};
 
 const StartLayout = (props: Props) => {
+    const testHandler = async () => {
+        const res = await client.functions.invoke("new-chat", {
+            body: {
+                message: "Hi! My name is Nizar!",
+            },
+        });
+
+        console.log(res.data);
+    };
+
     return (
         <View style={styles.content}>
             <StyledText style={styles.welcomeText}>
                 Act as <Text style={styles.innerText}>English teacher...</Text>
             </StyledText>
+
             <StyledText style={styles.or}>OR</StyledText>
             <TouchableOpacity
                 activeOpacity={0.5}
                 hitSlop={{ top: 16, bottom: 16, left: 16, right: 16 }}
-                onPress={() => client.auth.signOut()}
+                onPress={() => testHandler()}
             >
                 <View style={styles.button}>
                     <ChatTeardropText

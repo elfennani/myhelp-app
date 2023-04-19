@@ -5,6 +5,7 @@ import theme from "../../lib/theme";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { serverDomain } from "../../lib/config";
 import { useRouter, useSearchParams } from "expo-router";
+import client from "../../lib/client";
 
 type Props = {
     onSubmit?(message: string): void;
@@ -19,26 +20,19 @@ const MessageField = ({ onSubmit }: Props) => {
     const createChat = useMutation(
         ["chat"],
         async (message: string) => {
-            const res = await fetch(`${serverDomain}/chats`, {
-                method: "POST",
-                body: JSON.stringify({
-                    userId: "642eceba4a5f1eae848bd64a",
-                    message,
-                }),
-                headers: {
-                    "Content-Type": "application/json",
+            const { data, error } = await client.functions.invoke("new-chat", {
+                body: {
+                    message: message,
                 },
             });
 
-            if (res.status != 200) throw new Error("Something wrong happened");
-
-            const data = await res.json();
-
-            return data.chat;
+            if (error) throw error;
+            return data;
         },
         {
             onSuccess: (data) => {
-                queryClient.setQueryData(["chat", data.id], data);
+                queryClient.setQueryData(["chat", data.id + ""], data.messages);
+                queryClient.invalidateQueries(["history"]);
                 router.push(`/chat/${data.id}`);
                 setValue("");
             },
@@ -48,32 +42,29 @@ const MessageField = ({ onSubmit }: Props) => {
     const messageChat = useMutation(
         ["chat", chatId],
         async ({ chatId, message }: { message: string; chatId: string }) => {
-            const res = await fetch(`${serverDomain}/chat/${chatId}`, {
-                method: "POST",
-                body: JSON.stringify({
-                    message,
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
+            const { data, error } = await client.functions.invoke(
+                "message-chat",
+                {
+                    body: {
+                        chat_id: chatId,
+                        message,
+                    },
+                }
+            );
 
-            const data = await res.json();
-            return data.chat;
+            if (error) throw error;
+            return data;
         },
         {
             onMutate: (message) => {
-                queryClient.setQueryData(["chat", chatId], (prev: any) => ({
+                queryClient.setQueryData(["chat", chatId], (prev: any) => [
                     ...prev,
-                    messages: [
-                        ...prev.messages,
-                        {
-                            role: "user",
-                            content: message.message,
-                            loading: true,
-                        },
-                    ],
-                }));
+                    {
+                        role: "user",
+                        content: message.message,
+                        loading: true,
+                    },
+                ]);
             },
             onSuccess: (data) => {
                 queryClient.setQueryData(["chat", chatId], data);

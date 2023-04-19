@@ -1,49 +1,46 @@
-import { Alert, StyleSheet, Text, ToastAndroid, View } from "react-native";
-import React, { useEffect, useState } from "react";
-import {
-    usePathname,
-    useSearchParams,
-    useLocalSearchParams,
-    useNavigation,
-} from "expo-router";
+import { StyleSheet } from "react-native";
+import React from "react";
+import { useSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { serverDomain } from "../../../lib/config";
 import ChatMessages from "../../../components/organisms/ChatMessages";
+import useDoubleReturn from "../../../hooks/useDoubleReturn";
+import client from "../../../lib/client";
+import { Message } from "../../../types";
 
 type Props = {};
 
 const ChatPage = (props: Props) => {
     const { chatId, message } = useSearchParams();
-    const [isGoingBack, setIsGoingBack] = useState(false);
-    const nav = useNavigation();
-    const query = useQuery(["chat", chatId], async () => {
-        const res = await fetch(`${serverDomain}/chat/${chatId}`);
-        return (await res.json()).chat;
-    });
+    const query = useQuery(
+        ["chat", chatId],
+        async () => {
+            await new Promise((res) => setTimeout(res, 5000));
+            const res = await client
+                .from("messages")
+                .select("*")
+                .eq("chat_id", chatId);
 
-    useEffect(() => {
-        const listener = (e: any) => {
-            if (e.data.action.type !== "GO_BACK") return;
-            if (!isGoingBack) {
-                e.preventDefault();
-            } else {
-                return;
-            }
+            if (res.error) throw res.error;
 
-            ToastAndroid.show("Go back twice to return", ToastAndroid.SHORT);
-            setIsGoingBack(true);
-            setTimeout(() => setIsGoingBack(false), 1000);
-        };
-        nav.addListener("beforeRemove", listener);
-
-        return () => {
-            nav.removeListener("beforeRemove", listener);
-        };
-    }, [isGoingBack]);
+            return res.data;
+        },
+        {
+            select: (data) => {
+                return data.map(
+                    ({ content, role }): Message => ({
+                        content,
+                        role: role as "user" | "assistant",
+                    })
+                );
+            },
+        }
+    );
+    useDoubleReturn();
 
     if (!query.data) return <></>;
 
-    return <ChatMessages messages={query.data.messages} />;
+    return <ChatMessages messages={query.data} />;
 };
 
 export default ChatPage;
