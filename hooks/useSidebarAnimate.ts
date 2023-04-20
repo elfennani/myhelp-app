@@ -73,5 +73,10 @@ export default function useSidebarAnimate() {
                 velocity: 5,
                 damping: 15,
             })),
+        closeSidebar: () =>
+            (transformX.value = withSpring(0, {
+                velocity: 5,
+                damping: 15,
+            })),
     };
 }

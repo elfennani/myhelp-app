@@ -12,9 +12,10 @@ import { PanGestureHandler } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 import ChatHistory from "../../components/organisms/ChatHistory";
 import StyledText from "../../components/atoms/StyledText";
-import MessageField from "../../components/molecules/MessageField";
+import MessageField from "../../components/organisms/MessageField";
 import useSidebarAnimate from "../../hooks/useSidebarAnimate";
 import Header from "../../components/molecules/Header";
+import { SidebarContext } from "../../hooks/sidebar";
 
 type Props = {};
 
@@ -28,64 +29,72 @@ const RootLayout = (props: Props) => {
         openHistory,
         openPersons,
         rightStyle,
+        closeSidebar,
     } = useSidebarAnimate();
 
     return (
-        <PanGestureHandler
-            // failOffsetY={[-32, 32]}
-            activeOffsetX={[-32, 32]}
-            onGestureEvent={gestureHandler}
+        <SidebarContext.Provider
+            value={{
+                closeSidebar: closeSidebar,
+                openSidebar: openHistory,
+            }}
         >
-            <Animated.View style={[styles.container]}>
-                <Animated.View
-                    style={[
-                        styles.sidebar,
-                        styles.leftSidebar,
-                        {
-                            top: top + 16,
-                            bottom: bottom + 32,
-                        },
-                        leftStyle,
-                    ]}
-                >
-                    <ChatHistory />
-                    <View style={{ padding: 16 }}>
-                        {/* TODO: Add Profile here */}
-                        <StyledText>Profile here</StyledText>
-                    </View>
+            <PanGestureHandler
+                // failOffsetY={[-32, 32]}
+                activeOffsetX={[-32, 32]}
+                onGestureEvent={gestureHandler}
+            >
+                <Animated.View style={[styles.container]}>
+                    <Animated.View
+                        style={[
+                            styles.sidebar,
+                            styles.leftSidebar,
+                            {
+                                top: top + 16,
+                                bottom: bottom + 32,
+                            },
+                            leftStyle,
+                        ]}
+                    >
+                        <ChatHistory />
+                        <View style={{ padding: 16 }}>
+                            {/* TODO: Add Profile here */}
+                            <StyledText>Profile here</StyledText>
+                        </View>
+                    </Animated.View>
+                    <Animated.View
+                        style={[
+                            styles.home,
+                            {
+                                paddingTop: top + 32,
+                                paddingBottom: bottom + 32,
+                            },
+                            contentStyle,
+                        ]}
+                    >
+                        <Header
+                            onOpenHistory={openHistory}
+                            onOpenPersons={openPersons}
+                        />
+                        <View style={{ flex: 1 }}>
+                            <Slot />
+                        </View>
+                        <MessageField />
+                    </Animated.View>
+                    <Animated.View
+                        style={[
+                            styles.sidebar,
+                            styles.rightSidebar,
+                            {
+                                top: top + 16,
+                                bottom: bottom + 32,
+                            },
+                            rightStyle,
+                        ]}
+                    ></Animated.View>
                 </Animated.View>
-                <Animated.View
-                    style={[
-                        styles.home,
-                        {
-                            paddingTop: top + 32,
-                            paddingBottom: bottom + 32,
-                        },
-                        contentStyle,
-                    ]}
-                >
-                    <Header
-                        onOpenHistory={openHistory}
-                        onOpenPersons={openPersons}
-                    />
-                    <View style={{ flex: 1 }}>
-                        <Slot />
-                    </View>
-                    <MessageField />
-                </Animated.View>
-                <Animated.View
-                    style={[
-                        styles.sidebar,
-                        styles.rightSidebar,
-                        {
-                            top: top + 16,
-                            bottom: bottom + 32,
-                        },
-                        rightStyle,
-                    ]}
-                ></Animated.View>
-            </Animated.View>
-        </PanGestureHandler>
+            </PanGestureHandler>
+        </SidebarContext.Provider>
     );
 };
 
