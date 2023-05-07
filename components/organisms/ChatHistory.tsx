@@ -14,6 +14,7 @@ import HistoryItem from "../molecules/HistoryItem";
 import { useQuery } from "@tanstack/react-query";
 import { serverDomain } from "../../lib/config";
 import client from "../../lib/client";
+import { useSidebar } from "../../contexts/sidebar";
 
 type Props = {};
 

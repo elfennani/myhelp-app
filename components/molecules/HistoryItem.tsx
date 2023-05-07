@@ -3,6 +3,7 @@ import React from "react";
 import StyledText from "../atoms/StyledText";
 import theme from "../../lib/theme";
 import { useRouter, useSearchParams } from "expo-router";
+import { useSidebar } from "../../contexts/sidebar";
 
 type Props = {
     name: string;
@@ -10,17 +11,34 @@ type Props = {
     timeCreated: Date;
 };
 
-const HistoryItem = (props: Props) => {
+const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+];
+
+const HistoryItem = ({ id, name, timeCreated }: Props) => {
     const { chatId } = useSearchParams();
     const router = useRouter();
+    const { closeSidebar } = useSidebar();
 
     const loadChatHandler = () => {
+        closeSidebar();
         if (!chatId) {
-            router.push(`/chat/${props.id}`);
+            router.push(`/chat/${id}`);
             return;
         }
 
-        router.replace(`/chat/${props.id}`);
+        router.replace(`/chat/${id}`);
     };
 
     return (
@@ -31,10 +49,10 @@ const HistoryItem = (props: Props) => {
         >
             <>
                 <StyledText style={styles.name} numberOfLines={1}>
-                    {props.name}
+                    {name}
                 </StyledText>
                 <StyledText size="xs" style={styles.time}>
-                    3 Apr
+                    {timeCreated.getDate()} {months[timeCreated.getMonth()]}
                 </StyledText>
             </>
         </TouchableHighlight>

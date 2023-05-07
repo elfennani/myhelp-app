@@ -1,21 +1,15 @@
 import React from "react";
-import { Slot, SplashScreen, useRouter, useSegments } from "expo-router";
-import {
-    useFonts,
-    Outfit_400Regular,
-    Outfit_500Medium,
-    Outfit_600SemiBold,
-} from "@expo-google-fonts/outfit";
+import { Slot } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { StyleSheet, View } from "react-native";
 import { PanGestureHandler } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 import ChatHistory from "../../components/organisms/ChatHistory";
-import StyledText from "../../components/atoms/StyledText";
 import MessageField from "../../components/organisms/MessageField";
 import useSidebarAnimate from "../../hooks/useSidebarAnimate";
 import Header from "../../components/molecules/Header";
-import { SidebarContext } from "../../hooks/sidebar";
+import { SidebarContext } from "../../contexts/sidebar";
+import SideBarFooter from "../../components/molecules/SideBarFooter";
 
 type Props = {};
 
@@ -27,7 +21,7 @@ const RootLayout = (props: Props) => {
         gestureHandler,
         leftStyle,
         openHistory,
-        openPersons,
+        toggleSidebar,
         rightStyle,
         closeSidebar,
     } = useSidebarAnimate();
@@ -57,10 +51,7 @@ const RootLayout = (props: Props) => {
                         ]}
                     >
                         <ChatHistory />
-                        <View style={{ padding: 16 }}>
-                            {/* TODO: Add Profile here */}
-                            <StyledText>Profile here</StyledText>
-                        </View>
+                        <SideBarFooter />
                     </Animated.View>
                     <Animated.View
                         style={[
@@ -73,8 +64,8 @@ const RootLayout = (props: Props) => {
                         ]}
                     >
                         <Header
-                            onOpenHistory={openHistory}
-                            onOpenPersons={openPersons}
+                            onOpenHistory={toggleSidebar}
+                            onOpenPersons={() => {}}
                         />
                         <View style={{ flex: 1 }}>
                             <Slot />

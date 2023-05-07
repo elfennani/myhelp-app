@@ -68,11 +68,17 @@ export default function useSidebarAnimate() {
                 velocity: 5,
                 damping: 15,
             })),
-        openPersons: () =>
-            (transformX.value = withSpring(-320, {
-                velocity: 5,
-                damping: 15,
-            })),
+        toggleSidebar: () =>
+            (transformX.value =
+                transformX.value == 320
+                    ? withSpring(0, {
+                          velocity: 5,
+                          damping: 15,
+                      })
+                    : withSpring(320, {
+                          velocity: 5,
+                          damping: 15,
+                      })),
         closeSidebar: () =>
             (transformX.value = withSpring(0, {
                 velocity: 5,

@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import StyledText from "../atoms/StyledText";
 import { Coin } from "phosphor-react-native";
 import theme from "../../lib/theme";
-import { useQuery, useQueryClient, useIsFetching } from "@tanstack/react-query";
+import { useQueryClient, useIsFetching } from "@tanstack/react-query";
 import { useSearchParams } from "expo-router";
 
 type Props = {
@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     header: {
         paddingHorizontal: 16,
         paddingVertical: 4,
+        paddingTop: 12,
         alignItems: "center",
         justifyContent: "space-between",
         flexDirection: "row",
